@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class=""> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuyaphambili Investments - Innovative IT & Software Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        /* Custom base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300;
+        }
+
+        /* Simple preloader concept - refine with branded SVG */
+        .preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            @apply bg-white dark:bg-gray-900 flex justify-center items-center;
+            transition: opacity 0.5s ease-out;
+        }
+        .preloader-dots span {
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          margin: 0 5px;
+          border-radius: 50%;
+          /* Using Tailwind animation classes */
+          @apply animate-pulse;
+        }
+        .dot-red { background-color: #EF4444; } /* Tailwind red-500 */
+        .dot-black { background-color: #1F2937; } /* Tailwind gray-800 */
+        .dark .dot-black { background-color: #D1D5DB; } /* Tailwind gray-300 */
+
+        /* Hide preloader when content loads */
+        .loaded .preloader {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Prevent interaction after hiding */
+        }
+
+        /* Animated SVG placeholder styles */
+        .tech-flow-svg {
+            width: 80%;
+            max-width: 400px;
+            height: auto;
+            margin: 2rem auto 0;
+        }
+        .tech-flow-svg .flow-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw-line 5s linear infinite;
+            @apply stroke-indigo-500 dark:stroke-indigo-400;
+        }
+         .tech-flow-svg .node {
+            animation: pulse-node 2s ease-in-out infinite alternate;
+            @apply fill-indigo-600 dark:fill-indigo-500;
+         }
+         .tech-flow-svg .node-alt {
+             animation: pulse-node 2s ease-in-out 0.5s infinite alternate; /* Offset animation */
+             @apply fill-red-500 dark:fill-red-400;
+         }
+
+        @keyframes draw-line {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        @keyframes pulse-node {
+            from {
+                opacity: 0.7;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Ensure sticky header background color adapts */
+        header.sticky {
+             /* Changed dark background to gray-900 for better contrast */
+             @apply bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm;
+        }
+
+        /* Style for the theme toggle */
+        .theme-toggle-button {
+            @apply p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-900; /* Adjusted offset for darker header */
+        }
+    </style>
+</head>
+<body x-data="themeSwitcher()" :class="{ 'dark': isDark }">
+
+    <div class="preloader">
+        <div class="preloader-dots">
+             <span class="dot-red delay-75"></span>
+             <span class="dot-black delay-150"></span>
+             <span class="dot-red delay-300"></span>
+        </div>
+    </div>
+
+    <header class="shadow-md sticky top-0 z-50 transition-colors duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1">
+                    <span class="block w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
+                    <span class="block w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full"></span>
+                    <span class="block w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
+                </div>
+                 <span class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Kuyaphambili</span>
+                 <span class="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300">Investments</span>
+                 <div class="flex items-center space-x-1">
+                    <span class="block w-2 h-2 sm:w-3 sm:h-3 bg-gray-800 dark:bg-gray-300 rounded-full"></span>
+                    <span class="block w-3 h-3 sm:w-4 sm:h-4 bg-gray-800 dark:bg-gray-300 rounded-full"></span>
+                    <span class="block w-2 h-2 sm:w-3 sm:h-3 bg-gray-800 dark:bg-gray-300 rounded-full"></span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-5 lg:space-x-6">
+                 <a href="#home" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Home</a>
+                <a href="#about" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">About Us</a>
+                <a href="#services" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Services</a>
+                <a href="#process" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Process</a>
+                <a href="#projects" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Projects</a>
+                <a href="#careers" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Careers</a>
+                <a href="#contact" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out text-sm">Contact Us</a>
+                <button @click="toggleTheme" class="theme-toggle-button">
+                    <span x-show="!isDark" class="h-5 w-5" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM4.25 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 .75.75ZM14.596 6.464a.75.75 0 1 0 1.06-1.06l-1.06-1.061a.75.75 0 0 0-1.06 1.06l1.06 1.06ZM5.404 15.657a.75.75 0 1 0 1.06-1.06l-1.06-1.06a.75.75 0 0 0-1.06 1.06l1.06 1.06Z"/></svg>
+                    </span>
+                    <span x-show="isDark" class="h-5 w-5" aria-hidden="true">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clip-rule="evenodd" /></svg>
+                    </span>
+                    <span class="sr-only">Toggle theme</span>
+                </button>
+            </div>
+
+            <div class="md:hidden flex items-center space-x-2">
+                 <button @click="toggleTheme" class="theme-toggle-button">
+                    <span x-show="!isDark" class="h-5 w-5" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM4.25 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 .75.75ZM14.596 6.464a.75.75 0 1 0 1.06-1.06l-1.06-1.061a.75.75 0 0 0-1.06 1.06l1.06 1.06ZM5.404 15.657a.75.75 0 1 0 1.06-1.06l-1.06-1.06a.75.75 0 0 0-1.06 1.06l1.06 1.06Z"/></svg>
+                    </span>
+                    <span x-show="isDark" class="h-5 w-5" aria-hidden="true">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clip-rule="evenodd" /></svg>
+                    </span>
+                    <span class="sr-only">Toggle theme</span>
+                </button>
+                <button id="mobile-menu-button" @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden absolute top-full left-0 w-full bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">Home</a>
+                <a href="#about" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">About Us</a>
+                <a href="#services" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">Services</a>
+                 <a href="#process" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">Process</a>
+                <a href="#projects" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">Projects</a>
+                <a href="#careers" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">Careers</a>
+                <a href="#contact" @click="mobileMenuOpen = false" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="relative overflow-hidden py-20 md:py-32 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-indigo-900">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+                    Driving Transformation Through Innovative IT & Software Solutions
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+                    Kuyaphambili Investments empowers government and corporate clients by optimizing processes and delivering cutting-edge technology, focusing on agile, process-centric strategies.
+                </p>
+                <a href="#services" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-md text-lg transition duration-150 ease-in-out inline-block shadow-md hover:shadow-lg">Explore Our Services</a>
+
+                <div class="mt-12">
+                     <svg class="tech-flow-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color: #6366F1; stop-opacity: 1" /> <stop offset="100%" style="stop-color: #EC4899; stop-opacity: 1" /> </linearGradient>
+                        </defs>
+                        <path class="flow-line" d="M 10 50 Q 50 10, 100 50 T 190 50" stroke="url(#lineGradient)" stroke-width="2" fill="none"/>
+                        <path class="flow-line" d="M 10 60 Q 50 90, 100 60 T 190 60" stroke-width="1.5" fill="none" style="animation-delay: 0.5s;"/>
+
+                        <circle class="node" cx="10" cy="50" r="4" />
+                        <circle class="node-alt" cx="100" cy="50" r="5" />
+                        <circle class="node" cx="190" cy="50" r="4" />
+                        <circle class="node-alt" cx="10" cy="60" r="3" />
+                        <circle class="node" cx="100" cy="60" r="4" />
+                        <circle class="node-alt" cx="190" cy="60" r="3" />
+                    </svg>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Visualizing process optimization and tech integration</p>
+                </div>
+            </div>
+             <div class="absolute inset-0 -z-0 opacity-10 dark:opacity-20" aria-hidden="true">
+                </div>
+        </section>
+
+        <section id="about" class="py-16 md:py-24 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                     <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">About Kuyaphambili Investments</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+                            As a black-owned and managed company in South Africa, Kuyaphambili Investments takes a 360-degree view of IT investments for government and corporate businesses through innovative technology development.
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            We understand that the most critical issues in today's business are process-centric. The pressures of commoditization and globalization demand optimized processes to reduce costs, maintain margins, innovate, and improve customer relations.
+                        </p>
+                         <p class="text-gray-600 dark:text-gray-400 mb-6">
+                           At the core of delivering services are processes that must be well-defined, fine-tuned, and optimized. We leverage consulting services and innovative technology, especially in software development, to continuously improve these processes and deliver the best outcomes for customers and citizens.
+                        </p>
+                        <a href="#contact" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">
+                            Connect with us &rarr;
+                        </a>
+                     </div>
+                     <div class="space-y-8">
+                         <div class="p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
+                             <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Our Mission</h3>
+                             <p class="text-gray-600 dark:text-gray-300">To empower businesses and government entities by delivering innovative technology solutions and consulting services that optimize processes, drive growth, and enhance service delivery.</p>
+                         </div>
+                          <div class="p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
+                             <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Our Vision</h3>
+                             <p class="text-gray-600 dark:text-gray-300">To be the leading provider of process-centric IT solutions in South Africa, fostering transformation and sustainable growth for our clients and their stakeholders.</p>
+                         </div>
+                         </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="services" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">Comprehensive IT & Software Services</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400">
+                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Business Systems Analysis</h3>
+                        <ul class="text-gray-600 dark:text-gray-400 text-sm space-y-1 list-disc list-inside flex-grow">
+                            <li>Requirements Gathering</li>
+                            <li>Process & Gap Analysis</li>
+                            <li>Solution Design</li>
+                            <li>Stakeholder Communication</li>
+                            <li>Change Management</li>
+                            <li>Validation & Testing</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                         <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Project Management</h3>
+                        <ul class="text-gray-600 dark:text-gray-400 text-sm space-y-1 list-disc list-inside flex-grow">
+                            <li>Leadership & Team Management</li>
+                            <li>Effective Communication</li>
+                            <li>Risk Management</li>
+                            <li>Time & Budget Control</li>
+                            <li>Adaptability</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ring-2 ring-indigo-500 dark:ring-indigo-600 flex flex-col">
+                         <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400">
+                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Software Development</h3>
+                         <p class="text-gray-600 dark:text-gray-400 text-sm mb-2 flex-grow">High-quality web, mobile app development, and rigorous solutions testing following best practices.</p>
+                         <ul class="text-gray-600 dark:text-gray-400 text-xs space-y-1 list-inside">
+                            <li>Analysis & Design</li>
+                            <li>Coding & Testing</li>
+                            <li>Deployment & Maintenance</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                         <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.24a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Business Architecture</h3>
+                         <ul class="text-gray-600 dark:text-gray-400 text-sm space-y-1 list-disc list-inside flex-grow">
+                            <li>User-Centric Designs</li>
+                            <li>Operations Enablement</li>
+                            <li>Data-Driven Insights</li>
+                            <li>Scalability & Flexibility</li>
+                            <li>Security & Compliance</li>
+                            <li>Reliability & Resilience</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="py-16 md:py-24 bg-white dark:bg-gray-800">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Focusing on Process Optimization</h2>
+                  <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+                      We believe that process optimization is crucial for success. IT provides new tools and approaches to enable agile, process-centric strategies, moving beyond simple product differentiation.
+                  </p>
+                  <div class="mt-10 p-8 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-lg max-w-4xl mx-auto shadow">
+                       <h3 class="text-2xl font-semibold text-indigo-800 dark:text-indigo-300 mb-4">How We Improve Processes</h3>
+                       <p class="text-gray-700 dark:text-gray-300">
+                           Through detailed analysis, strategic consulting, and the implementation of innovative software solutions, we help clients redefine how they deliver services, ensuring processes are well-defined, fine-tuned, and continuously improved for optimal performance and customer satisfaction.
+                       </p>
+                       <div class="mt-6 text-gray-500 dark:text-gray-400">[Placeholder: Interactive Diagram/Flowchart showing Analysis -> Solution -> Optimization]</div>
+                  </div>
+             </div>
+        </section>
+
+        <section id="projects" class="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">Recent Project Experience</h2>
+                 <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">FBS-Fullstream Business Services</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: GPAA</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Ulwembu Business Services</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: City of Ekurhuleni</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">KMM Quality Solutions</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: Rand Water</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Aluta Consulting</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: PIC</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">PSIRA</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: PSIRA</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Lepelle Northern Water</p>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Client: Lepelle Northern Water</p>
+                    </div>
+                 </div>
+                 <p class="text-center mt-8 text-gray-600 dark:text-gray-400">Partnering with leading government and corporate entities.</p>
+            </div>
+        </section>
+
+
+        <section id="industries" class="py-16 md:py-24 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">Industries We Empower</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                     <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-lg shadow-sm text-center border-l-4 border-indigo-500">
+                         <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400 mx-auto">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                         </div>
+                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Government</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Optimizing public service delivery and processes with innovative IT solutions, enhancing citizen services through technology.</p>
+                    </div>
+                     <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-lg shadow-sm text-center border-l-4 border-red-500">
+                         <div class="w-16 h-16 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-400 mx-auto">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                         </div>
+                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Corporate</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Enhancing business efficiency, customer relations, and market competitiveness through strategic IT investments and software solutions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="careers" class="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Join Our Team</h2>
+                  <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+                      We are always looking for talented individuals passionate about technology and transformation. Explore opportunities to grow with Kuyaphambili Investments.
+                  </p>
+                  <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-md text-lg transition duration-150 ease-in-out inline-block shadow hover:shadow-md">
+                      View Open Positions
+                  </a>
+                 <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">[Career listings and company culture details to be added here]</p>
+             </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-24 bg-white dark:bg-gray-800">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">Get In Touch</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+                     <div>
+                         <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Send us a message</h3>
+                         <form action="#" method="POST" class="space-y-4">
+                             <div>
+                                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                                 <input type="text" name="name" id="name" autocomplete="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+                             </div>
+                             <div>
+                                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                                 <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+                             </div>
+                             <div>
+                                 <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                                 <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></textarea>
+                             </div>
+                             <div>
+                                 <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                                     Send Message
+                                 </button>
+                             </div>
+                         </form>
+                     </div>
+                     <div class="space-y-6">
+                         <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Contact Information</h3>
+                         <div>
+                             <h4 class="text-lg font-medium text-gray-700 dark:text-gray-200">Gauteng Office</h4>
+                             <p class="text-gray-600 dark:text-gray-400">Unit 1C The Precinct, 1 Mushroom Road, Waterfall</p>
+                         </div>
+                         <div>
+                             <h4 class="text-lg font-medium text-gray-700 dark:text-gray-200">KZN Office</h4>
+                             <p class="text-gray-600 dark:text-gray-400">9 Leopard Street, Observation Hill, Ladysmith</p>
+                         </div>
+                         <div>
+                             <h4 class="text-lg font-medium text-gray-700 dark:text-gray-200">Phone</h4>
+                             <a href="tel:+27724601845" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300">072 460 1845</a>
+                         </div>
+                         <div>
+                             <h4 class="text-lg font-medium text-gray-700 dark:text-gray-200">Email</h4>
+                             <a href="mailto:thabang@k-investments.co.za" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 block">thabang@k-investments.co.za</a>
+                             <a href="mailto:lekhobo@gmail.com" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 block">lekhobo@gmail.com</a>
+                         </div>
+                         <div class="mt-4 h-48 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center text-gray-500 dark:text-gray-400">
+                             [Embedded Map Placeholder - e.g., Google Maps iframe]
+                         </div>
+                         <div class="mt-4 text-gray-500 dark:text-gray-400">
+                             [Social Media Links Placeholder - e.g., LinkedIn]
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 dark:bg-black text-gray-300 dark:text-gray-400 py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                     <a href="/" class="flex items-center space-x-2 mb-4">
+                         <div class="flex items-center space-x-1">
+                            <span class="block w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="block w-4 h-4 bg-red-500 rounded-full"></span>
+                         </div>
+                         <span class="text-xl font-bold text-white">Kuyaphambili</span>
+                          <div class="flex items-center space-x-1">
+                            <span class="block w-3 h-3 bg-white rounded-full"></span>
+                            <span class="block w-4 h-4 bg-white rounded-full"></span>
+                         </div>
+                    </a>
+                    <p class="text-sm">Innovative IT & Software Solutions for Government & Corporate sectors.</p>
+                    <div class="mt-4 flex space-x-4">
+                         <a href="#" class="text-gray-400 hover:text-white" title="LinkedIn">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                            <span class="sr-only">LinkedIn</span>
+                         </a>
+                         <a href="#" class="text-gray-400 hover:text-white" title="Twitter/X">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            <span class="sr-only">Twitter/X</span>
+                         </a>
+                         </div>
+                </div>
+                <div class="md:col-span-1">
+                    <h5 class="text-lg font-semibold text-white mb-4">Quick Links</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover:text-white">About Us</a></li>
+                        <li><a href="#services" class="hover:text-white">Services</a></li>
+                        <li><a href="#process" class="hover:text-white">Process Optimization</a></li>
+                        <li><a href="#projects" class="hover:text-white">Projects</a></li>
+                        <li><a href="#careers" class="hover:text-white">Careers</a></li>
+                        <li><a href="#contact" class="hover:text-white">Contact</a></li>
+                        </ul>
+                </div>
+                <div class="md:col-span-1">
+                    <h5 class="text-lg font-semibold text-white mb-4">Our Services</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#services" class="hover:text-white">Business Systems Analysis</a></li>
+                        <li><a href="#services" class="hover:text-white">Project Management</a></li>
+                        <li><a href="#services" class="hover:text-white">Software Development</a></li>
+                        <li><a href="#services" class="hover:text-white">Business Architecture</a></li>
+                    </ul>
+                </div>
+                <div class="md:col-span-1">
+                     <h5 class="text-lg font-semibold text-white mb-4">Contact Us</h5>
+                     <address class="not-italic text-sm space-y-2">
+                        <p><strong>Gauteng:</strong> Unit 1C The Precinct, 1 Mushroom Rd, Waterfall</p>
+                        <p><strong>KZN:</strong> 9 Leopard St, Observation Hill, Ladysmith</p>
+                        <p><strong>Phone:</strong> <a href="tel:+27724601845" class="hover:text-white">072 460 1845</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:thabang@k-investments.co.za" class="hover:text-white">thabang@k-investments.co.za</a></p>
+                     </address>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 dark:border-gray-600 text-center text-sm text-gray-500 dark:text-gray-400">
+                &copy; <span id="current-year"></span> Kuyaphambili Investments (Pty) Ltd. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // AlpineJS component for theme switching and mobile menu
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('themeSwitcher', () => ({
+                isDark: false,
+                mobileMenuOpen: false,
+                init() {
+                    // Check local storage for saved theme preference
+                    const savedTheme = localStorage.getItem('theme');
+                    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                        this.isDark = true;
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        this.isDark = false;
+                        document.documentElement.classList.remove('dark');
+                    }
+                    // Add smooth transition class after initial load
+                    setTimeout(() => document.body.classList.add('transition-colors', 'duration-300'), 50);
+                },
+                toggleTheme() {
+                    this.isDark = !this.isDark;
+                    if (this.isDark) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    }
+                }
+            }));
+        });
+
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Basic Preloader Hiding
+        window.addEventListener('load', () => {
+            // Add a small delay for effect if desired
+            setTimeout(() => {
+               document.body.classList.add('loaded');
+               // The preloader element will hide via CSS (.loaded .preloader)
+            }, 300); // Adjust delay slightly
+        });
+
+        // Smooth scrolling for anchor links (optional but recommended)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calculate offset considering the sticky header height
+                    const headerOffset = document.querySelector('header').offsetHeight || 70; // Adjust fallback height if needed
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
