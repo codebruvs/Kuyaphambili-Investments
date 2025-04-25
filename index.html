@@ -381,28 +381,28 @@
              <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                  <h2 class="text-3xl md:text-4xl font-bold text-center text-light-text dark:text-white mb-12">Get In Touch</h2>
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-                     <div>
-                         <h3 class="text-2xl font-semibold text-light-text dark:text-white mb-4">Send us a message</h3>
-                         <form action="#" method="POST" class="space-y-4">
-                             <div>
-                                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                                 <input type="text" name="name" id="name" autocomplete="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
-                             </div>
-                             <div>
-                                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                                 <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
-                             </div>
-                             <div>
-                                 <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
-                                 <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></textarea>
-                             </div>
-                             <div>
-                                 <button type="submit" class="cta-button w-full inline-flex justify-center py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-red dark:focus:ring-offset-dark-card">
-                                     Send Message
-                                 </button>
-                             </div>
-                         </form>
-                     </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-light-text dark:text-red-500 mb-4">Send us a message</h3>
+                        <form action="https://formspree.io/f/myzwzyyb" method="POST" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                                <input type="text" name="name" id="name" autocomplete="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                                <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                                <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="cta-button dark:bg-gray-200 dark:text-brand-red dark:hover:bg-gray-300 w-full inline-flex justify-center py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-red dark:focus:ring-red-500 dark:focus:ring-offset-dark-card">
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                      <div class="space-y-6">
                          <h3 class="text-2xl font-semibold text-light-text dark:text-white mb-4">Contact Information</h3>
                          <div>
@@ -493,10 +493,12 @@
                 mobileMenuOpen: false,
                 init() {
                     const savedTheme = localStorage.getItem('theme');
-                    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                        this.isDark = true; document.documentElement.classList.add('dark');
+                    if (savedTheme === 'light') {
+                        this.isDark = false;
+                        document.documentElement.classList.remove('dark');
                     } else {
-                        this.isDark = false; document.documentElement.classList.remove('dark');
+                        this.isDark = true;
+                        document.documentElement.classList.add('dark');
                     }
                     setTimeout(() => document.body.classList.add('transition-colors', 'duration-300'), 50);
                 },
